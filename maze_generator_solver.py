@@ -8,9 +8,10 @@ from collections import deque
 pygame.init()
 
 # 101 7
-ROWS, COLLS = 41, 51    # Needs to be odd
-CELL_SIZE = 15
+ROWS, COLLS = 101, 101    # Needs to be odd
+CELL_SIZE = 7
 HEIGHT, WIDTH = COLLS * CELL_SIZE, ROWS * CELL_SIZE
+CHANCE = 0.05
 WHITE = pygame.Color(255, 255, 255)
 BLACK = pygame.Color(0, 0, 0)
 RED = pygame.Color(255, 0, 0)
@@ -38,7 +39,7 @@ def generate_maze(x=0, y=0):
 
 ### This func was made by chatgpt because its late ###
 # Function to randomly remove some walls to introduce loops in the maze
-def create_loops(maze, chance=0.05):
+def create_loops(maze, chance=CHANCE):
     for x in range(1, ROWS - 1):
         for y in range(1, COLLS - 1):
             # Only consider walls between two open cells
@@ -118,7 +119,7 @@ def draw_visited(visited, color):
 
 maze = init_grid(ROWS, COLLS)
 generate_maze()
-create_loops(maze, chance=0.05)  # Add loops to the maze by removing walls
+create_loops(maze, CHANCE)  # Add loops to the maze by removing walls
 draw_maze(maze)
 
 show_solution = False
@@ -155,3 +156,5 @@ while run:
                 generate_maze()
                 create_loops(maze)
                 draw_maze(maze)
+                show_solution = False
+                show_visited = False
