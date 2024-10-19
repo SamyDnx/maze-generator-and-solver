@@ -7,7 +7,6 @@ from collections import deque
 
 pygame.init()
 
-# 101 7
 ROWS, COLLS = 101, 101    # Needs to be odd
 CELL_SIZE = 7
 HEIGHT, WIDTH = COLLS * CELL_SIZE, ROWS * CELL_SIZE
@@ -38,20 +37,17 @@ def generate_maze(x=0, y=0):
             maze[x + dir_x][y + dir_y] = 0
             generate_maze(nei_x, nei_y)
 
-### This func was made by chatgpt because its late ###
-# Function to randomly remove some walls to introduce loops in the maze
 def create_loops(maze, chance=CHANCE):
     for x in range(1, ROWS - 1):
         for y in range(1, COLLS - 1):
-            # Only consider walls between two open cells
             if maze[x][y] == 1:
-                neighbors = 0
+                nei = 0
                 for dir_x, dir_y in directions:
                     nei_x, nei_y = x + dir_x, y + dir_y
                     if 0 <= nei_x < ROWS and 0 <= nei_y < COLLS and maze[nei_x][nei_y] == 0:
-                        neighbors += 1
-                # If there are two or more open neighbors, remove the wall with a small chance
-                if neighbors >= 2 and random.random() < chance:
+                        nei += 1
+
+                if nei >= 2 and random.random() < chance:
                     maze[x][y] = 0
 
 def bfs_solve(maze, start, goal):
@@ -84,9 +80,8 @@ def bfs_solve(maze, start, goal):
 
     return (path, visited)
 
-# TODO : Implement dfs
 def dfs_solve(maze, start, goal):
-    frontier = [start]  # stack
+    frontier = [start]    # stack
     visited = set([start])
     parent = {}
 
@@ -167,7 +162,7 @@ while run:
             run = False
             pygame.quit()
             quit()
-        # TODO : addapt the input handler for different solving algorithms
+
         elif event.type == pygame.KEYDOWN:
             if solve_type == "bfs": solve = bfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
             elif solve_type == "dfs": solve = dfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
@@ -207,8 +202,7 @@ while run:
                             rect = pygame.Rect(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE)
                             pygame.draw.rect(window, WHITE, rect)
                 pygame.display.flip()
-                #draw_path(solve[0], WHITE)
-                #draw_visited(solve[1], WHITE)
+
                 show_bfs_solution = False
                 show_dfs_solution = False
                 show_bfs_visited = False
@@ -219,8 +213,11 @@ while run:
                 generate_maze()
                 create_loops(maze)
                 draw_maze(maze)
-                show_solution = False
-                show_visited = False
+                
+                how_bfs_solution = False
+                show_dfs_solution = False
+                show_bfs_visited = False
+                show_dfs_visited = False
             
             elif event.key == pygame.K_b:
                 solve_type = "bfs"
