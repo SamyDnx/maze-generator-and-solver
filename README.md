@@ -1,6 +1,3 @@
-Here's a GitHub README.md for your maze-solving project:
-
-```markdown
 # Maze Solver
 
 This project generates a random maze using recursive backtracking and introduces loops to create multiple possible paths. It includes implementations of two algorithms: **Breadth-First Search (BFS)** and **Depth-First Search (DFS)** to solve the maze. The solution paths and visited cells can be visualized in real-time using Pygame.
