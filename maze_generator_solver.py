@@ -130,7 +130,7 @@ def draw_maze(maze):
                 case -2:
                     color = RED
             pygame.draw.rect(window, color, rect)
-            pygame.display.flip()
+    pygame.display.flip()
 
 def draw_path(path, color):
     for coor in path:
@@ -142,7 +142,7 @@ def draw_visited(visited, color):
     for coor in visited:
         rect = pygame.Rect(coor[1]*CELL_SIZE, coor[0]*CELL_SIZE, CELL_SIZE, CELL_SIZE)
         pygame.draw.rect(window, color, rect)
-        pygame.display.flip()
+    pygame.display.flip()
 
 
 maze = init_grid(ROWS, COLLS)
@@ -201,8 +201,14 @@ while run:
 
 
             elif event.key == pygame.K_BACKSPACE:
-                draw_path(solve[0], WHITE)
-                draw_visited(solve[1], WHITE)
+                for i in range(ROWS):
+                    for j in range(COLLS):
+                        if maze[i][j] == 0:
+                            rect = pygame.Rect(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+                            pygame.draw.rect(window, WHITE, rect)
+                pygame.display.flip()
+                #draw_path(solve[0], WHITE)
+                #draw_visited(solve[1], WHITE)
                 show_bfs_solution = False
                 show_dfs_solution = False
                 show_bfs_visited = False
