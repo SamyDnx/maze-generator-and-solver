@@ -145,7 +145,6 @@ generate_maze()
 create_loops(maze, CHANCE)  # Add loops to the maze by removing walls
 draw_maze(maze)
 
-
 show_bfs_solution = False
 show_dfs_solution = False
 
@@ -166,7 +165,6 @@ while run:
         elif event.type == pygame.KEYDOWN:
             if solve_type == "bfs": solve = bfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
             elif solve_type == "dfs": solve = dfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
-
 
             if event.key == pygame.K_SPACE:
                 if solve_type == "bfs":
@@ -193,7 +191,6 @@ while run:
                     else: draw_visited(solve[1], PINK)
                     show_dfs_visited = not show_dfs_visited
                     show_dfs_solution = False
-
 
             elif event.key == pygame.K_BACKSPACE:
                 for i in range(ROWS):
