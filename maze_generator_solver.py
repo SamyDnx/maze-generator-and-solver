@@ -17,6 +17,7 @@ BLACK = pygame.Color(0, 0, 0)
 RED = pygame.Color(255, 0, 0)
 GREEN = pygame.Color(0, 255, 0)
 BLUE = pygame.Color(0, 0, 255)
+PINK = pygame.Color(153, 0, 76)
 
 window = pygame.display.set_mode((HEIGHT, WIDTH))
 pygame.display.set_caption("Maze Solver")
@@ -85,7 +86,34 @@ def bfs_solve(maze, start, goal):
 
 # TODO : Implement dfs
 def dfs_solve(maze, start, goal):
-    ...
+    frontier = [start]  # stack
+    visited = set([start])
+    parent = {}
+
+    while frontier:
+        curr = frontier.pop()
+
+        if curr == goal:
+            break
+
+        for dir_x, dir_y in directions:
+            nei = (curr[0] + dir_x, curr[1] + dir_y)
+
+            if 0 <= nei[0] < ROWS and 0 <= nei[1] < COLLS and nei not in visited and maze[nei[0]][nei[1]] == 0:
+                frontier.append(nei)
+                visited.add(nei) 
+                parent[nei] = curr
+        
+    # Backtrack to breakdown the path found
+    path = []
+    curr = goal
+    while curr != start:
+        path.append(parent[curr])
+        curr = parent[curr]
+    path.append(start)
+    path.reverse()
+
+    return (path, visited)
 
 def draw_maze(maze):
     window.fill(WHITE)
@@ -122,8 +150,14 @@ generate_maze()
 create_loops(maze, CHANCE)  # Add loops to the maze by removing walls
 draw_maze(maze)
 
-show_solution = False
-show_visited = False
+
+show_bfs_solution = False
+show_dfs_solution = False
+
+show_bfs_visited = False
+show_dfs_visited = False
+
+solve_type = "bfs"
 
 run = True
 while run:
@@ -135,22 +169,45 @@ while run:
             quit()
         # TODO : addapt the input handler for different solving algorithms
         elif event.type == pygame.KEYDOWN:
-            bfs = bfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
+            if solve_type == "bfs": solve = bfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
+            elif solve_type == "dfs": solve = dfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
+
+
             if event.key == pygame.K_SPACE:
-                if show_solution: draw_path(bfs[0], WHITE)
-                else: draw_path(bfs[0], GREEN)
-                show_solution = not show_solution
-                show_visited = False
+                if solve_type == "bfs":
+                    if show_bfs_solution: draw_path(solve[0], WHITE)
+                    else: draw_path(solve[0], GREEN)
+                    show_bfs_solution = not show_bfs_solution
+                    show_bfs_visited = False
+
+                elif solve_type == "dfs":
+                    if show_dfs_solution: draw_path(solve[0], WHITE)
+                    else: draw_path(solve[0], BLUE)
+                    show_dfs_solution = not show_dfs_solution
+                    show_dfs_visited = False
+
             elif event.key == pygame.K_e:
-                if show_visited: draw_visited(bfs[1], WHITE)
-                else: draw_visited(bfs[1], RED)
-                show_visited = not show_visited
-                show_solution = False
+                if solve_type == "bfs":
+                    if show_bfs_visited: draw_visited(solve[1], WHITE)
+                    else: draw_visited(solve[1], RED)
+                    show_bfs_visited = not show_bfs_visited
+                    show_bfs_solution = False
+                
+                elif solve_type == "dfs":
+                    if show_dfs_visited: draw_visited(solve[1], WHITE)
+                    else: draw_visited(solve[1], PINK)
+                    show_dfs_visited = not show_dfs_visited
+                    show_dfs_solution = False
+
+
             elif event.key == pygame.K_BACKSPACE:
-                draw_path(bfs[0], WHITE)
-                draw_visited(bfs[1], WHITE)
-                show_solution = False
-                show_visited = False
+                draw_path(solve[0], WHITE)
+                draw_visited(solve[1], WHITE)
+                show_bfs_solution = False
+                show_dfs_solution = False
+                show_bfs_visited = False
+                show_dfs_visited = False
+
             elif event.key == pygame.K_r:
                 maze = init_grid(ROWS, COLLS)
                 generate_maze()
@@ -158,3 +215,12 @@ while run:
                 draw_maze(maze)
                 show_solution = False
                 show_visited = False
+            
+            elif event.key == pygame.K_b:
+                solve_type = "bfs"
+                solve = bfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
+
+            
+            elif event.key == pygame.K_d:
+                solve_type = "dfs"
+                solve = dfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
