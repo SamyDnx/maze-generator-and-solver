@@ -142,7 +142,7 @@ def draw_visited(visited, color):
 
 maze = init_grid(ROWS, COLLS)
 generate_maze()
-create_loops(maze, CHANCE)  # Add loops to the maze by removing walls
+create_loops(maze, CHANCE)  # Add loops to the maze by removing random walls
 draw_maze(maze)
 
 show_bfs_solution = False
