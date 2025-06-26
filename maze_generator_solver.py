@@ -21,7 +21,7 @@ PINK = pygame.Color(153, 0, 76)
 window = pygame.display.set_mode((HEIGHT, WIDTH))
 pygame.display.set_caption("Maze Solver")
 
-directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]    # U, R, L, D
+directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
 def init_grid(height, width):
     maze = [[1 for _ in range(width)] for _ in range(height)]
