@@ -7,7 +7,7 @@ from collections import deque
 
 pygame.init()
 
-ROWS, COLLS = 101, 101    # Needs to be odd
+ROWS, COLLS = 51, 51    # Needs to be odd
 CELL_SIZE = 7
 HEIGHT, WIDTH = COLLS * CELL_SIZE, ROWS * CELL_SIZE
 CHANCE = 0.05
@@ -159,8 +159,6 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-            pygame.quit()
-            quit()
 
         elif event.type == pygame.KEYDOWN:
             if solve_type == "bfs": solve = bfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
@@ -224,3 +222,5 @@ while run:
             elif event.key == pygame.K_d:
                 solve_type = "dfs"
                 solve = dfs_solve(maze, (0,0), (ROWS-1, COLLS-1))
+
+pygame.quit()
