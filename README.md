@@ -93,9 +93,9 @@ def draw_visited(visited, color):
 
 ## Example
 
-Here is an example of a randomly generated maze and its solution using DFS.
+Here is an example of a randomly generated maze and its solution using DFS (blue) and BFS (green).
 
-![Maze Solver Example](./images/example_maze.png)
+![Maze Solver Example](./example_maze.png)
 
 ## License
 
